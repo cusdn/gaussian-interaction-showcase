@@ -1,76 +1,98 @@
-# Gaussian Scene Simulation for Robot Interaction
+# Physics-Aware Gaussian Digital Twin
 
-**A research engineering showcase connecting Gaussian appearance, physical interaction and controlled evaluation.**
+**Bonsai reconstruction, part-wise physical assumptions, Franka Panda interaction, UE5 integration and Gaussian world-model experiments.**
 
-Project by [cusdn](https://github.com/cusdn) · Computer graphics / embodied simulation · Evidence snapshot: 12 November 2026.
+Research engineering project by [cusdn](https://github.com/cusdn). Evidence snapshot: November 2026.
 
-![Recorded contact with an original procedural Gaussian fixture](site/assets/reference-push.jpg)
+![Actual Panda contact with the part-bound Gaussian Bonsai](site/media/canopy_brush_soft-overview.jpg)
 
-[Watch the recorded contact clip](site/assets/reference-push.mp4) · [Read the results](docs/RESULTS.md) · [Technical architecture](docs/ARCHITECTURE.md) · [Contribution scope](docs/CONTRIBUTIONS.md)
+[Live demo](https://cusdn.github.io/gaussian-interaction-showcase/) · [Canopy contact video](site/media/canopy_brush_soft-contact.mp4) · [Pot push](site/media/pot_push_soft-overview.mp4) · [Trunk response](site/media/stem_nudge_soft-contact.mp4) · [Results and scope](docs/EVIDENCE.md)
 
-The original research implementation remains private. This independent presentation contains a static website, original presentation assets and selected aggregate facts. It contains no research source, model weights, raw dataset records or inherited Git history. A deployed website URL will be added only after publication is approved and verified.
+The primary demonstration is a robot physically interacting with a reconstructed Bonsai through part-wise proxies. It is followed by reconstruction / collision engineering, UE playback, material-hypothesis experiments, dynamic Gaussian studies and an independent real-pushing evaluation. Separate studies use different assets and evaluation conditions. They are not merged into a claim of one universally accurate world model.
 
-## Research problem
+This is a presentation-only showcase. Research source, core algorithms, weights, training recipes, raw data, trajectories, remote configuration and original Git history are excluded. The owner approved this presentation media set. Underlying Bonsai capture / derived-media licensing has not been conclusively verified, and upstream rights are retained. [Media scope](MEDIA_NOTICE.md).
 
-Gaussian reconstructions describe how a scene looks. Robot interaction additionally requires geometry, scale, physical assumptions and state transitions. The engineering challenge is to keep the visual representation consistent with those transitions and to distinguish a plausible animation from a tested physical prediction.
+## Watch the robot interact with a Gaussian scene
 
-This project investigates that connection through scene adapters, part-wise visual / physical binding, contact integration, synchronized rendering and controlled evaluation. Separate experiments assess appearance, simulation integration and endpoint forecasting. They do not establish a universally valid learned Gaussian world model.
+The primary scene uses all **239,941 Gaussians** of a supplied public Bonsai representation. Persistent association links appearance to the pot, stand, trunk and canopy parts. Joint motors drive a Franka Panda and contact paddle. The engine solves contact and equivalent elastic joints; a paired run disables robot / object contact while replaying the same motor commands.
 
-## Technical overview
+| Recorded condition | Pot peak displacement | Maximum canopy peak displacement | Peak normal contact force |
+|---|---:|---:|---:|
+| Pot push | 70.86 mm | 87.75 mm | 13.186 N |
+| Canopy brush | 0.05 mm | 39.25 mm | 0.313 N |
+| Trunk nudge | 3.58 mm | 133.83 mm | 6.717 N |
+| Canopy brush, alternate material assumptions | 0.14 mm | 40.19 mm | 0.639 N |
 
-![Conceptual architecture](site/assets/architecture.png)
+The site includes **eight original clips**, with full-scene / contact views for four conditions, synchronized play / pause, timeline seeking, replay, looping and 0.25×–2× speed. Part-color and original-appearance views illustrate the association. In the soft canopy brush, the three canopy parts end within 0.75 nominal mm of their settled reference after withdrawal.
 
-1. Start with images, a supplied Gaussian reconstruction, or an authored reference fixture.
-2. Associate persistent visual samples with a scene state and physical parts.
-3. Use collision proxies and engine dynamics to evolve the physical state.
-4. Render and inspect state-aligned appearance and recorded interactions.
-5. Evaluate appearance, contact behavior and prediction under explicitly stated conditions.
+These are nominal simulation measurements with assumed scale and material settings. The alternate condition changes several factors together. Canopy / trunk are equivalent rigid parts with elastic joints, not individual-leaf or continuum models. These contact recordings use SH0 and baked appearance. They do not recompute Gaussian shadows or establish real-plant calibration.
 
-Different experiments exercise different subsets. This diagram is a conceptual overview rather than a claim of a fully trained end-to-end system. See the [architecture notes](docs/ARCHITECTURE.md).
+## Reconstruction, collision geometry and UE5
 
-## Actual experiments
+![High-level overview of complementary project studies](site/assets/architecture.png)
 
-| Experiment | Observed result | Interpretation |
-|---|---|---|
-| Original synthetic contact fixture | 1,536 Gaussians, 201 recorded poses over 4 s, 125 mm object displacement along x | A prescribed kinematic pusher contacts a free body solved by MuJoCo. The public clip is a new render of that existing trajectory. Synthetic appearance, no learned policy. |
-| Reconstructed Bonsai integration | 239,941 supplied Gaussians, four recorded contact cases | Part-wise physical proxies, persistent identity and covariance transport were checked. Real-object material parameters were not calibrated. Derived natural-scene media is withheld pending licensing clarification. |
-| Duck appearance diagnostic | Mean foreground PSNR 21.72 → 23.25 dB; mean silhouette IoU 0.92271 → 0.92368 | Four reused development views. No new independent validation. Residual visual artifacts remain; no dynamics improvement is inferred. |
-| Command-conditioned real pushing | Interpolation improves, angle and contact-side transfer do not beat calibrated physics | Offline endpoint prediction on the MIT Push Dataset. The overall registered success test was not passed. |
+- **Actual Bonsai training.** Gaussian Grouping, 255 training images, 30,000 iterations, 2,453,898 Gaussians. Thirty-seven same-capture image-loss holdout views give **31.437 dB PSNR / 0.9364 SSIM**. Supplied COLMAP uses the capture, and later development reused these views. This is a separate model from the contact scene.
+- **Depth-to-collision engineering.** Camera-depth backprojection, multiview fusion / consistency, robust surface fitting and collision export. Surface, contact and controller outcomes are assessed separately. The combined consistency / robust baseline did not beat robust-only fitting in controlled tests.
+- **Live integration.** MuJoCo → UDP → native C++ → UE5, with coordinate, rigid-body pose and Gaussian state checks.
+- **Complete SH / HDR.** A separate trained-model UE candidate preserves third-order SH, supports HDR attributes and has later actual DX11 / live-state validation. It is not the older supplied-scene color-corrected recording included here.
+- **Native playback controls.** Play / pause, replay, five speed settings, loop and scrub in the UE window. This is recorded MuJoCo state playback; changing playback speed does not solve new physics.
 
-The public video shows a **synthetic reference fixture**, not the Bonsai or duck reconstruction. Its geometry, colors, floor and annotations are authored in this project. Natural-scene captures and their derived media are omitted while source-image rights remain unresolved.
+[Actual native UE recording](site/media/ue-bonsai.mp4) · [Actual control interface](site/media/ue-controls.png).
 
-### Endpoint prediction, including failure under distribution shifts
+Full-SH motion-rebuild frames averaged about 57–59 ms in two limited runs. A high rate of cached frames is not a continuous-motion performance claim. Baked illumination, approximate collision geometry and nominal physical parameters remain limitations.
 
-![Original chart of project-computed aggregate endpoint prediction results](site/assets/results.png)
+## Materials as hypotheses, then motion observations
 
-| Evaluation cohort | Action groups / trials | Calibrated physics | Local linear | Physics + learned correction |
-|---|---:|---:|---:|---:|
-| Position interpolation | 92 / 1,104 | 2.151 | 1.957 | **1.832** |
-| Angle extrapolation | 88 / 1,056 | **1.137** | 2.246 | 2.066 |
-| Other contact sides | 10 / 930 | **1.814** | 1.996 | 1.928 |
+The project associates visible parts with finite material hypotheses, uses an appearance-conditioned prior, maps assumptions to an engine model and updates hypothesis weights from probe responses. Bayesian updating and active probing are studied as a concrete scene-level implementation; these broad ideas have prior literature and are not claimed as original inventions.
 
-Values are mean endpoint four-corner RMS in millimeters, lower is better. Training uses 138 nominal action groups / 1,656 trials. Repetitions stay within their action partition; trial scores are averaged within actions before actions are weighted equally. Forecast inputs are initial state and commanded action. Future executed-tip logs are excluded from forecast inputs. These are project baselines, not a state-of-the-art comparison. All cohorts use the same square object and surface; other sides do not constitute cross-object transfer.
+![Original aggregate material-probe chart](site/assets/material-probes.png)
 
-Original visualization and aggregate calculations use the [MIT Push Dataset](https://web.mit.edu/mcube/push-dataset/index.html) described by Yu et al., IROS 2016. The dataset is not redistributed or relicensed here. [Full metric scope](docs/RESULTS.md) · [Machine-readable aggregates](site/data/results.json).
+For **64 simulated cases**, mean marker prediction error on an unseen oblique push changes from **35.68 mm** with the appearance prior alone to **7.71 mm** after two active probes. One active probe gives 7.43 mm; a suitable fixed canopy / pot probe pair gives 7.39 mm. These controls show that motion observations carry substantial information, while active selection is not consistently superior.
 
-## Project contributions
+A later frozen study uses **128 new simulated cases / 640 solves**. Target-directed selection gives 6.75 vs 7.02 mm for the preselected fixed pair within the proxy regime, but 11.73 vs 11.26 mm under changed contacts / compliance. The overall cross-condition success criterion is not passed. Known force, registration and marker correspondence are assumed. No real material identification or real-object accuracy is established.
 
-- Scene-to-simulation engineering: coordinate and scale conventions, visual / physical part association, Gaussian state transport and contact-scene adaptation.
-- Rendering and inspection: Gaussian / geometry composition, Unreal Engine playback integration, repeatable recordings and browser inspection.
-- Evidence and diagnosis: controlled prediction studies, independently recomputed metrics, reconstruction comparisons and explicit negative findings.
+## Dynamic Gaussian world-model experiments
 
-Established Gaussian representations, physics engines, upstream paper implementations and datasets are credited separately. No claim is made to invent 3DGS, MuJoCo or the cited research methods. See [contribution boundaries](docs/CONTRIBUTIONS.md) and [sources / licensing](docs/ATTRIBUTION.md).
+ManiGaussian-based work includes camera / depth interface corrections, multiview supervision, relative-action conditioning, static / dynamic decomposition, training / ablation comparisons and matched retrieval / local-translation controls. The online study predicts candidate outcomes before actual execution, then obtains a new RGB-D observation for a later decision.
 
-## Limitations and next research questions
+The public presentation summarizes this study through the evaluation protocol and aggregate results below. Visual reconstruction retains blur and missing detail; goal-reaching success does not establish high-fidelity scene prediction.
 
-Physical proxies, scale and material assumptions require real-object calibration. Recorded interactions do not demonstrate autonomous policy learning. Baked reconstructed appearance does not recompute Gaussian cast shadows under changing contact or lighting. Duck development-view improvement does not establish unseen-view quality. The endpoint predictor fails the overall transfer criterion. Full paper reproduction, a general learned Gaussian world model and real-robot task success are not claimed.
+### Post-grasp online goal reaching
 
-Research directions include material identification, cross-object / contact evaluation, deformable contact, illumination-aware rendering and closed-loop manipulation with uncertainty-aware scene state.
+**30 independent new configurations, 60 supplied goals, 16 method / seed labels, 960 actual simulation replays.** All use one simulated drawer asset. The expert grasp prefix, command library and target RGB-D are supplied. At most two macro-actions are executed with renewed visual observations.
 
-## View the demo
+| Method | Target reached within 20 mm and no execution error | Mean final target error |
+|---|---:|---:|
+| Static / dynamic decomposition | **99.4%** | **2.11 mm** |
+| Relative-command network | 83.3% | 8.91 mm |
+| Same decomposition weights, one execution | 90.0% | 5.96 mm |
+| Earlier multiview model | 56.1% | 30.50 mm |
 
-Open [`site/index.html`](site/index.html) directly in a browser. Video replay, pause, seeking and 0.5× / 1× / 2× playback work locally. The static page has no runtime packages, analytics, external font requests, physics execution or model downloads.
+![Post-grasp online goal-reaching aggregates](site/assets/online-goal.png)
 
-The included [GitHub Pages workflow](.github/workflows/pages.yml) is manual-only and packages `site/`. Repository creation, upload and deployment require the owner's approval. No live link is claimed in this snapshot.
+Repetitions are not 960 independent configurations. Statistics average goals within configurations, then configurations and training seeds. The paired improvement over the relative-command model is 16.11 percentage points with exploratory 95% interval [10.00, 22.22], without multiple-comparison adjustment.
 
-For research collaboration, contact [cusdn through GitHub](https://github.com/cusdn). Original presentation implementation is MIT licensed; see [LICENSE](LICENSE) for its precise scope. Upstream works retain their own rights.
+This is **post-grasp target reaching**, not full autonomous RLBench task success, Bonsai learned manipulation, cross-asset evaluation, Gaussian reconstruction accuracy or real-robot success. The earlier offline selection experiment had less conclusive comparisons against a strong relative-command model. Key novelty and a persistent contact-accurate general world model are not established.
+
+## Additional interactions
+
+- **Free-body stacking:** two free bodies, 32/32 held-out simulations with a known-state waypoint controller. Ideal box geometry and limited parameter variation apply.
+- **Domino cascade:** four free bodies, the robot contacts the first only. 32/32 runs record successive neighbor contact and ordered toppling; eight no-action controls stay upright.
+
+[Free-stack UE screenshot](site/media/ue-free-stack.png) · [Domino UE screenshot](site/media/ue-domino.png). Blocks use authored reference Gaussian appearance with reconstructed Bonsai background. These are MuJoCo physics / control demonstrations replayed in UE, not scanned-block reconstruction or learned dynamics predictions.
+
+## Real-record validation
+
+An independent MIT Push Dataset study fits a physics correction and compares command-conditioned endpoint forecasts. It improves position interpolation from 2.151 to 1.832 mm four-corner RMS but loses to calibrated physics under angle / contact-side changes. The overall registered criterion is not passed. Initial state and commanded action are forecast inputs; future executed-tip logs are excluded. Small aggregate facts and an original plot are included, not raw dataset rows or images.
+
+[Detailed experiment boundaries](docs/EVIDENCE.md) · [Aggregate results JSON](site/data/results.json).
+
+## Project contributions and future research
+
+Project work covers representation / coordinate contracts, part association, depth / collision adaptation, Panda / UE integration, SH / HDR interfaces, camera / depth repairs, experiment variants, ablations and independent validation. Established 3DGS, Gaussian Grouping, ManiGaussian, MuJoCo and public data are credited. Full original paper training reproduction, general method novelty, real material calibration and real-robot transfer are not claimed.
+
+Future directions include material calibration, persistent Gaussian state, contact-aware prediction, cross-object tests, relighting and closed-loop manipulation. [Contact cusdn](https://github.com/cusdn) for research collaboration.
+
+## View locally
+
+Open `site/index.html` in a browser. The static page has no runtime dependency installation, model downloads, trackers or live physics execution. Its controls operate only on presentation media. The release is restricted to an exact owner-approved whitelist. Private build / evidence / review files remain outside the public repository. GitHub Pages serves the static site through its dedicated deployment branch.

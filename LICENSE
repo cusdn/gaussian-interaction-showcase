@@ -2,10 +2,11 @@ MIT License
 
 Copyright (c) 2026 cusdn
 
-Scope: the original showcase presentation implementation, text and authored
-assets in this standalone package only. This license does not apply to the
-private research implementation or grant rights to upstream works, datasets,
-engines, captured photographs or excluded materials. See docs/ATTRIBUTION.md.
+Scope: original presentation HTML, CSS, JavaScript, authored prose and
+architecture / aggregate charts in this candidate only. Every file in
+site/media/ is excluded from this MIT grant and remains subject to its
+separate source rights. See MEDIA_NOTICE.md. No rights are granted to the
+private research implementation, upstream software, datasets or engines.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
