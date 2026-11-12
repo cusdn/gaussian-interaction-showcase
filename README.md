@@ -4,7 +4,7 @@
 
 Research engineering project by [cusdn](https://github.com/cusdn). Evidence snapshot: November 2026.
 
-![Actual Panda contact with the part-bound Gaussian Bonsai](site/media/canopy_brush_soft-overview.jpg)
+[![Open the live robot and Gaussian Bonsai demonstration](site/media/canopy_brush_soft-overview.jpg)](https://cusdn.github.io/gaussian-interaction-showcase/#robot)
 
 [Live demo](https://cusdn.github.io/gaussian-interaction-showcase/) · [Canopy contact video](site/media/canopy_brush_soft-contact.mp4) · [Pot push](site/media/pot_push_soft-overview.mp4) · [Trunk response](site/media/stem_nudge_soft-contact.mp4) · [Results and scope](docs/EVIDENCE.md)
 
