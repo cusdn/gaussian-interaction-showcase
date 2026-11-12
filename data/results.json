@@ -1,6 +1,140 @@
 {
   "snapshot": "2026-11-12",
-  "public_scope": "Presentation and selected aggregate facts only.",
+  "bonsai_reconstruction": {
+    "training_images": 255,
+    "image_loss_holdout_views": 37,
+    "training_iterations": 30000,
+    "gaussians": 2453898,
+    "psnr_db": 31.4369967693,
+    "ssim": 0.9364233049,
+    "scope": "Separately trained Bonsai via Gaussian Grouping. Same-capture image-loss holdout; supplied COLMAP uses the capture. Not the supplied 239941-Gaussian contact asset."
+  },
+  "contact": {
+    "gaussians": 239941,
+    "cases": [
+      {
+        "case": "pot_push_soft",
+        "pot_peak_displacement_mm": 70.85906385559178,
+        "canopy_peak_displacement_mm": 87.75371972623185,
+        "canopy_max_final_displacement_mm": 87.5398170224018,
+        "peak_normal_force_N": 13.18637639727881,
+        "maximum_penetration_mm": 0.100987731734351,
+        "solver_warnings": 0,
+        "peak_contact_vs_no_contact_part_difference_mm": 88.24538691554339
+      },
+      {
+        "case": "canopy_brush_soft",
+        "pot_peak_displacement_mm": 0.05139225554540961,
+        "canopy_peak_displacement_mm": 39.25382989775298,
+        "canopy_max_final_displacement_mm": 0.7464796059843651,
+        "peak_normal_force_N": 0.31289233214988793,
+        "maximum_penetration_mm": 0.04948483378080463,
+        "solver_warnings": 0,
+        "peak_contact_vs_no_contact_part_difference_mm": 39.755184609523454
+      },
+      {
+        "case": "stem_nudge_soft",
+        "pot_peak_displacement_mm": 3.5792691250578916,
+        "canopy_peak_displacement_mm": 133.83379895456926,
+        "canopy_max_final_displacement_mm": 3.7383278926252363,
+        "peak_normal_force_N": 6.7165195270206635,
+        "maximum_penetration_mm": 0.09645541746818552,
+        "solver_warnings": 0,
+        "peak_contact_vs_no_contact_part_difference_mm": 134.54708642913408
+      },
+      {
+        "case": "canopy_brush_hard",
+        "pot_peak_displacement_mm": 0.14195499290650465,
+        "canopy_peak_displacement_mm": 40.19290568709369,
+        "canopy_max_final_displacement_mm": 0.15179519632071872,
+        "peak_normal_force_N": 0.6387821031022957,
+        "maximum_penetration_mm": 0.09070162315790434,
+        "solver_warnings": 0,
+        "peak_contact_vs_no_contact_part_difference_mm": 40.19870175013481
+      }
+    ],
+    "scope": "Supplied public reconstruction; joint-motor Panda contact, part-wise rigid proxies and elastic joints. Nominal scale and assumed materials; no real-object calibration.",
+    "rendering": "Recorded contact videos use all scene Gaussians with SH0 appearance. This is separate from the UE full-SH integration.",
+    "no_contact_control": "Same recorded motor commands with robot/object contact disabled. Part trajectories were compared, not just endpoint motion."
+  },
+  "online_goal": {
+    "independent_configurations": 30,
+    "goals": 60,
+    "total_replays": 960,
+    "methods": [
+      {
+        "method": "Static / dynamic decomposition",
+        "goal_reaching_rate": 0.9944444444444445,
+        "target_error_mm": 2.1123099658224316,
+        "executed_macros": 1.25
+      },
+      {
+        "method": "Relative-command network",
+        "goal_reaching_rate": 0.8333333333333334,
+        "target_error_mm": 8.913633599877357,
+        "executed_macros": 1.3333333333333333
+      },
+      {
+        "method": "Same model, one execution",
+        "goal_reaching_rate": 0.9,
+        "target_error_mm": 5.960330615441005,
+        "executed_macros": 1.0
+      },
+      {
+        "method": "Earlier multiview model",
+        "goal_reaching_rate": 0.5611111111111111,
+        "target_error_mm": 30.503600628839596,
+        "executed_macros": 1.4166666666666667
+      },
+      {
+        "method": "Action nearest neighbor",
+        "goal_reaching_rate": 0.4166666666666667,
+        "target_error_mm": 39.494788398345314,
+        "executed_macros": 0.7
+      },
+      {
+        "method": "Relative-action nearest neighbor",
+        "goal_reaching_rate": 0.2833333333333333,
+        "target_error_mm": 50.566908468802765,
+        "executed_macros": 0.75
+      },
+      {
+        "method": "Local Gaussian translation",
+        "goal_reaching_rate": 0.5166666666666667,
+        "target_error_mm": 35.61789790789286,
+        "executed_macros": 1.4833333333333334
+      },
+      {
+        "method": "Language / pose retrieval",
+        "goal_reaching_rate": 0.31666666666666665,
+        "target_error_mm": 39.704592898488045,
+        "executed_macros": 0.65
+      }
+    ],
+    "scope": "One simulated drawer asset, supplied expert grasp prefix, candidate action library and goal RGB-D. At most two executed macro-actions with renewed observations. Target within 20 mm and no execution error; repeats are not independent configurations.",
+    "critical_novelty_established": false
+  },
+  "material": {
+    "simulated_cases": 64,
+    "visual_prior_error_mm": 35.68357039778299,
+    "two_active_probe_error_mm": 7.710668331231022,
+    "one_active_probe_error_mm": 7.433712130041706,
+    "fixed_canopy_pot_error_mm": 7.3929967475665,
+    "scope": "Unseen oblique-push marker prediction in a 64-case simulation benchmark. Known alignment, force and marker correspondence, noisy displacement observations. No real material identity claim.",
+    "followup_cases": 128,
+    "followup_solves": 640,
+    "followup_overall_test_passed": false,
+    "followup": {
+      "within_proxy": {
+        "target_directed_mm": 6.750224077268868,
+        "fixed_pair_mm": 7.023271569243015
+      },
+      "changed_contacts_and_compliance": {
+        "target_directed_mm": 11.730946453518321,
+        "fixed_pair_mm": 11.25875604082309
+      }
+    }
+  },
   "real_push": {
     "dataset": "MIT Push Dataset, Yu et al., IROS 2016",
     "source_url": "https://web.mit.edu/mcube/push-dataset/index.html",
@@ -44,30 +178,26 @@
       }
     ]
   },
-  "reconstruction": {
-    "object": "Figurines duck",
-    "metric": "Mean foreground PSNR on four reused development views",
-    "baseline_db": 21.719812030501338,
-    "candidate_db": 23.247015858754523,
-    "baseline_iou": 0.9227096358288496,
-    "candidate_iou": 0.9236756770706941,
-    "independent_validation": false,
-    "caveat": "Appearance diagnostic, not an independent test or dynamics metric."
+  "ue": {
+    "full_sh": "Third-order SH / HDR imported and checked in a separate trained-model candidate, with later actual DX11 and live UDP evidence.",
+    "current_full_sh_moving_rebuild_frame_ms": [
+      58.514,
+      56.92
+    ],
+    "playback": "Recorded MuJoCo state. Native UE pause, replay, five speeds, loop and scrub controls; speed changes do not re-solve physics.",
+    "shadow": "Baked Gaussian illumination is retained. No general dynamic Gaussian self-shadow or relighting claim."
   },
-  "reference_fixture": {
-    "gaussians": 1536,
-    "frames": 201,
-    "duration_s": 4.0,
-    "displacement_mm": 125.0,
-    "learned_scene": false,
-    "robot_policy": false,
-    "scope": "Authored synthetic Gaussian cube. Prescribed kinematic box pusher, MuJoCo solved free-body motion. Video re-renders the completed trajectory."
-  },
-  "reconstructed_scene": {
-    "gaussians": 239941,
-    "reused_public_reconstruction": true,
-    "contact_cases": 4,
-    "calibrated_real_materials": false,
-    "source_media_included": false
+  "additional_interactions": {
+    "free_stack": {
+      "successes": 32,
+      "trials": 32,
+      "known_state_controller": true
+    },
+    "domino": {
+      "successes": 32,
+      "trials": 32,
+      "no_action_controls": 8,
+      "authored_block_appearance": true
+    }
   }
 }
