@@ -1,5 +1,11 @@
 # Physics-Aware Gaussian Digital Twin
 
+## [▶ Open the interactive demo](https://cusdn.github.io/gaussian-interaction-showcase/#robot)
+
+**Robot contact videos · synchronized close-up · part visualization · pause, speed and replay**
+
+GitHub displays this project overview. Open the link above, or click the preview below, for the interactive website.
+
 **Bonsai reconstruction, part-wise physical assumptions, Franka Panda interaction, UE5 integration and Gaussian world-model experiments.**
 
 Research engineering project by [cusdn](https://github.com/cusdn). Evidence snapshot: November 2026.
