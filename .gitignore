@@ -1,0 +1,11 @@
+# Fresh presentation repository only. Additions require whitelist review.
+.DS_Store
+Thumbs.db
+.env*
+*.pem
+*.key
+node_modules/
+review/
+withheld/
+__pycache__/
+*.pyc

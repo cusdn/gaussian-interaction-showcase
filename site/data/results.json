@@ -1,0 +1,73 @@
+{
+  "snapshot": "2026-11-12",
+  "public_scope": "Presentation and selected aggregate facts only.",
+  "real_push": {
+    "dataset": "MIT Push Dataset, Yu et al., IROS 2016",
+    "source_url": "https://web.mit.edu/mcube/push-dataset/index.html",
+    "training_action_groups": 138,
+    "training_trials": 1656,
+    "registered_overall_test_passed": false,
+    "metric": "Mean endpoint four-corner RMS, mm. First average repeats within each nominal action, then weight actions equally.",
+    "forecast_inputs": "Commanded action and initial state. Future executed-tip logs are not forecast inputs.",
+    "split": "All repetitions of one nominal action stay in the same partition.",
+    "scope": "One square object and surface. Other sides are not new-object transfer.",
+    "cohorts": [
+      {
+        "name": "Position interpolation",
+        "action_groups": 92,
+        "trials": 1104,
+        "endpoint_corner_rms_mm": {
+          "Calibrated physics": 2.1506255419697258,
+          "Local linear": 1.9568261417863282,
+          "Physics + learned correction": 1.8316071301859234
+        }
+      },
+      {
+        "name": "Angle extrapolation",
+        "action_groups": 88,
+        "trials": 1056,
+        "endpoint_corner_rms_mm": {
+          "Calibrated physics": 1.1366373639095206,
+          "Local linear": 2.245811088045248,
+          "Physics + learned correction": 2.066251372167918
+        }
+      },
+      {
+        "name": "Other contact sides",
+        "action_groups": 10,
+        "trials": 930,
+        "endpoint_corner_rms_mm": {
+          "Calibrated physics": 1.8136665326017347,
+          "Local linear": 1.9959885148798606,
+          "Physics + learned correction": 1.9282502517958675
+        }
+      }
+    ]
+  },
+  "reconstruction": {
+    "object": "Figurines duck",
+    "metric": "Mean foreground PSNR on four reused development views",
+    "baseline_db": 21.719812030501338,
+    "candidate_db": 23.247015858754523,
+    "baseline_iou": 0.9227096358288496,
+    "candidate_iou": 0.9236756770706941,
+    "independent_validation": false,
+    "caveat": "Appearance diagnostic, not an independent test or dynamics metric."
+  },
+  "reference_fixture": {
+    "gaussians": 1536,
+    "frames": 201,
+    "duration_s": 4.0,
+    "displacement_mm": 125.0,
+    "learned_scene": false,
+    "robot_policy": false,
+    "scope": "Authored synthetic Gaussian cube. Prescribed kinematic box pusher, MuJoCo solved free-body motion. Video re-renders the completed trajectory."
+  },
+  "reconstructed_scene": {
+    "gaussians": 239941,
+    "reused_public_reconstruction": true,
+    "contact_cases": 4,
+    "calibrated_real_materials": false,
+    "source_media_included": false
+  }
+}

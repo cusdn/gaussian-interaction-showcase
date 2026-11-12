@@ -1,0 +1,90 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Evidence and attribution — Gaussian scene simulation</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/site.css"><style>.notes{max-width:870px;padding-block:40px 65px}.notes-section{border-top:1px solid var(--line);padding-block:38px}.notes h2{margin-bottom:25px}.notes h3{margin:28px 0 14px;font-size:21px;font-weight:500}.notes p,.notes li{font-size:15px;color:var(--muted);margin-bottom:17px}.notes ul{padding-left:22px}.notes table{min-width:640px}.notes nav{display:flex;gap:24px;flex-wrap:wrap;margin:24px 0 40px;font-size:13px}</style></head><body><a class="skip" href="#notes">Skip to evidence</a><header class="masthead wrap"><a class="wordmark" href="index.html"><span class="mark">g.</span> Return to showcase</a><span class="muted">Research evidence · November 2026</span></header><main class="wrap notes" id="notes"><p class="eyebrow">Methods, evidence and credit</p><h1 style="font-size:48px">Read the boundaries.</h1><nav aria-label="Evidence sections"><a href="#results">Results</a><a href="#contributions">Contributions</a><a href="#sources">Sources</a><a href="#architecture">Architecture</a></nav><section id="results" class="notes-section"><h2>Experimental results and limits</h2>
+<p>Snapshot: 12 November 2026. This document reports selected aggregates from completed experiments. It is an evidence summary, not an independently reproducible release of the private research pipeline. Full records and implementations remain private.</p>
+<h3>1. Public contact recording</h3>
+<p>The reference fixture is an authored procedural Gaussian cube and a kinematic box pusher. MuJoCo 3.2.7 solved free-body motion during an existing completed test. The showcase re-renders its recorded poses with a presentation camera, checker floor and labels. It does not rerun or modify the physical experiment.</p>
+<ul>
+<li>1,536 original Gaussians, never trained.</li>
+<li>201 poses over approximately 4 seconds; encoded at 50 frames per second.</li>
+<li>125 mm object displacement along x.</li>
+<li>The pusher follows a prescribed path. No learned robot policy is involved.</li>
+<li>Gaussian / geometry center-depth composition is an approximation. The recording does not demonstrate new Gaussian cast shadows.</li>
+</ul>
+<p><a href="assets/reference-push.mp4">Video</a> · <a href="assets/reference-comparison.jpg">Recorded frame comparison</a>.</p>
+<h3>2. Command-conditioned endpoint prediction</h3>
+<p>Data source: <a href="https://web.mit.edu/mcube/push-dataset/index.html">MIT Push Dataset</a>, Yu et al., IROS 2016. This project uses selected real pushing trials for an offline endpoint forecasting study. The chart and table are new expressions of small project-computed aggregate facts. Raw records and original dataset images are excluded.</p>
+<p>Training consists of 138 nominal action groups and 1,656 repetitions. Predictions use the initial state and commanded action. Future measured executed-tip trajectories are excluded from forecast inputs. All repeats of a nominal action stay in the same partition.</p>
+<p>For each trial, the endpoint metric is the RMS Euclidean error across the object&#x27;s four planar corners, in millimeters. Repeated trial scores are averaged within each nominal action, then action groups are weighted equally. Trial counts alone do not determine cohort weighting. These are endpoint scores, not trajectory averages or task success rates.</p>
+<div class="table-scroll"><table>
+<tr><td>Cohort</td><td>Actions</td><td>Trials</td><td>Calibrated physics, mm</td><td>Local linear, mm</td><td>Physics + learned correction, mm</td></tr>
+<tr><td>Position interpolation</td><td>92</td><td>1,104</td><td>2.150626</td><td>1.956826</td><td>1.831607</td></tr>
+<tr><td>Angle extrapolation</td><td>88</td><td>1,056</td><td>1.136637</td><td>2.245811</td><td>2.066251</td></tr>
+<tr><td>Other contact sides</td><td>10</td><td>930</td><td>1.813667</td><td>1.995989</td><td>1.928250</td></tr>
+</table></div>
+<p>The learned correction improves interpolation relative to the two listed baselines. It loses to calibrated physics under angle extrapolation and other-side evaluation. <strong>The overall registered success test was not passed.</strong> This supports a local empirical gain and a concrete generalization failure. It does not establish a broadly superior world model.</p>
+<p>The other-side cohort uses the same square object and surface. It is not cross-object transfer. The original project includes an independent score recomputation of the frozen forecast results; the maximum four-corner score discrepancy across 3,090 evaluation trials is approximately 3.6e-15 mm. This checks numerical scoring consistency, not independent scientific replication.</p>
+<h3>3. Reconstructed-scene integration</h3>
+<p>A supplied public Bonsai representation contains 239,941 Gaussians. Four recorded conditions cover a pot push, canopy brush, stem nudge and a paired canopy condition with changed assumed material settings. Persistent Gaussian identities and covariance transport were checked through the common part-binding path.</p>
+<p>This validates integration and state transport under the tested configuration. The source reconstruction was reused. Assumed scale and part materials were not measured from the physical plant. Recorded responses do not validate true leaf / stem / soil mechanics. Baked scene appearance does not recompute Gaussian shadows after interaction. Media from this reconstruction remains outside this public package pending source-image licensing clarification.</p>
+<h3>4. Duck appearance diagnostic</h3>
+<div class="table-scroll"><table>
+<tr><td>Mean metric on the same four development views</td><td>Existing baseline</td><td>Higher-detail candidate</td></tr>
+<tr><td>Foreground PSNR, dB</td><td>21.719812</td><td>23.247016</td></tr>
+<tr><td>Silhouette IoU</td><td>0.922710</td><td>0.923676</td></tr>
+</table></div>
+<p>These four views were reused during development; there is no new independent validation. The candidate retains visible artifacts. This is an appearance-only comparison. No physical-response improvement or generalization conclusion follows. Derived duck media is excluded while underlying capture rights are unresolved.</p>
+<h3>Reuse and reproducibility</h3>
+<p>The <a href="data/results.json">JSON summary</a> contains the selected aggregate values and their scope. Core algorithms, weights, per-trial data, calibrated models and trajectories are intentionally absent. The owner&#x27;s private evidence map records source files and hashes for review, but is not part of this public release.</p></section><section id="contributions" class="notes-section"><h2>Contribution scope</h2>
+<p>This is a project-level description of work completed in the private research workspace. It distinguishes integration and evaluation work from established upstream methods. It does not claim sole invention of the research field or full independent paper reproduction.</p>
+<div class="table-scroll"><table>
+<tr><td>Project work</td><td>Practical outcome</td><td>Established upstream foundation</td></tr>
+<tr><td>Scene adapters and representation contracts</td><td>Coordinate / scale alignment across Gaussian appearance, collision geometry and playback</td><td>Gaussian scene representations and engine conventions</td></tr>
+<tr><td>Visual / physical part association</td><td>Persistent identity and covariance transport for recorded part motion</td><td>Existing Gaussian and rigid-body mathematics</td></tr>
+<tr><td>Contact and inspection integration</td><td>Physics-engine contact scenes, Gaussian / geometry composition, UE playback and browser inspection</td><td>MuJoCo, Unreal Engine and supplied scene assets</td></tr>
+<tr><td>Controlled evaluation</td><td>Command-conditioned prediction baselines, grouped splits, frozen forecasts and independent score recomputation</td><td>MIT real pushing measurements and standard error metrics</td></tr>
+<tr><td>Reconstruction diagnosis</td><td>A measured appearance candidate comparison and explicit reused-view caveat</td><td>Public capture data and established Gaussian fitting methods</td></tr>
+</table></div>
+<h3>Research position</h3>
+<p>The demonstrated contribution is research engineering and empirical investigation of the interface between Gaussian appearance and interaction. The evidence identifies where an integrated pipeline works and where prediction fails. It does not support a claim of a generally superior Gaussian world model, a novel validated material inference method, or autonomous real-robot manipulation.</p>
+<h3>Collaboration directions</h3>
+<ul>
+<li>Calibrate physical scale and material response against real objects.</li>
+<li>Evaluate new objects, contact regimes and observation noise with independent splits.</li>
+<li>Extend contact and deformation modeling with uncertainty estimates.</li>
+<li>Separate baked scene appearance from illumination changes and dynamic shadows.</li>
+<li>Connect state estimation and dynamics to closed-loop manipulation policies.</li>
+</ul>
+<p>Project contact: <a href="https://github.com/cusdn">cusdn</a>. Specific responsibilities, contributor credit and access to private evidence can be discussed directly with the owner.</p></section><section id="sources" class="notes-section"><h2>Attribution, provenance and release scope</h2>
+<h3>Included presentation assets</h3>
+<p>The static page, presentation styling, architecture diagram, aggregate results chart, procedural fixture screenshots and re-rendered reference video were produced for this showcase. The reference fixture uses original elementary geometry, procedural colors and a checker floor, with no captured image texture, external model or learned asset. The video replays an already completed MuJoCo trajectory. It is labeled synthetic throughout.</p>
+<p>The MIT license in this package applies only to the original showcase presentation implementation, text and authored assets. It does not grant rights to upstream works, datasets, engines, or the private research implementation. Rights in underlying factual observations remain with their respective holders where applicable.</p>
+<h3>Sources</h3>
+<ul>
+<li><strong>Gaussian representation.</strong> Kerbl et al., *3D Gaussian Splatting for Real-Time Radiance Field Rendering*, SIGGRAPH 2023. <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">Official project</a>. The representation is an established foundation, not an invention claimed here.</li>
+<li><strong>MuJoCo.</strong> <a href="https://mujoco.org/">Official project</a> and <a href="https://github.com/google-deepmind/mujoco/blob/main/LICENSE">source / license</a>. Used to generate completed synthetic contact dynamics. No MuJoCo binary or source is packaged.</li>
+<li><strong>Real pushing measurements.</strong> Yu et al., *More than a Million Ways to Be Pushed: A High-Fidelity Experimental Dataset of Planar Pushing*, IROS 2016. <a href="https://web.mit.edu/mcube/push-dataset/index.html">MIT project and data</a>. Original chart of project-computed aggregate facts only. No raw records, original figures or photos are redistributed, and no dataset relicensing is claimed.</li>
+<li><strong>Bonsai reconstruction evidence.</strong> <a href="https://jonbarron.info/mipnerf360/">Mip-NeRF 360 project</a> and <a href="https://huggingface.co/datasets/dylanebert/3dgs">dylanebert/3dgs</a>. A supplied public reconstruction was used in the original integration study. This package contains selected factual descriptions, not weights, input photographs or derived scene media.</li>
+<li><strong>Duck capture evidence.</strong> <a href="https://github.com/lkeab/gaussian-grouping/blob/main/docs/dataset.md">Gaussian Grouping data documentation</a> and <a href="https://www.lerf.io/">LERF</a>. Derived media, photographs, masks and fitted assets are excluded. Software license labels alone do not resolve original capture rights.</li>
+<li><strong>Unreal Engine.</strong> <a href="https://www.unrealengine.com/">Official engine</a>. An integration target in the private project. No engine runtime, source, Starter Content, UE capture or vendor asset is packaged here.</li>
+</ul>
+<h3>Excluded material</h3>
+<p>Unresolved source-image rights keep Bonsai and duck screenshots / videos outside this public package. Private algorithms, source files, model weights, training recipes, material hypotheses, experiment trajectories, raw data, unpublished method details, remote connection settings, credentials, enterprise material and original Git history are excluded.</p>
+<p>Descriptive aggregate findings are release candidates awaiting the owner&#x27;s publication approval, not peer-reviewed claims. Public availability of a source is not treated as permission to redistribute it. No university, laboratory, engine vendor or dataset author endorsement is implied.</p></section><section id="architecture" class="notes-section"><h2>Technical architecture and scope</h2>
+<p>The system connects visual and physical representations through explicit state and coordinate contracts. This public overview intentionally omits private algorithms, parameterization, material hypotheses, model internals and training recipes.</p>
+<h3>Representation contracts</h3>
+<ul>
+<li>A scene adapter expresses scale and coordinate conventions consistently across rendering, collision geometry and playback.</li>
+<li>Persistent visual identities associate Gaussian appearance with physical parts. Part motion transports visual state and covariance.</li>
+<li>Physical proxies approximate contact geometry. Their material settings are assumptions unless independently calibrated.</li>
+<li>Recorded state supports repeatable inspection. The public webpage plays encoded video; it does not run the private pipeline.</li>
+</ul>
+<h3>Evidence boundaries</h3>
+<div class="table-scroll"><table>
+<tr><td>Study</td><td>What is exercised</td><td>What is not established</td></tr>
+<tr><td>Synthetic fixture</td><td>Engine contact, visual state association, rendering and recorded replay</td><td>Reconstruction quality, learned dynamics or policy success</td></tr>
+<tr><td>Bonsai recordings</td><td>Supplied reconstructed appearance, part-wise proxies and contact playback</td><td>Measured real-plant mechanics or dynamic relighting</td></tr>
+<tr><td>Duck diagnostic</td><td>Candidate appearance quality on reused views</td><td>Independent validation or improved physical behavior</td></tr>
+<tr><td>Real pushing</td><td>Offline command-conditioned endpoint prediction</td><td>Online Gaussian rollout, cross-object transfer or robot task success</td></tr>
+</table></div>
+<p>These studies support complementary engineering and empirical findings. They are not a single end-to-end learned pipeline evaluation.</p>
+<h3>Integration targets</h3>
+<p>MuJoCo provides contact dynamics. Unreal Engine playback integration and browser inspection provide presentation paths in the original project. Established Gaussian research and public datasets provide upstream representations and evidence. The showcase packages no engine runtime, research implementation, asset source, model weights or experiment trajectories.</p></section></main><footer class="wrap"><a href="index.html">Back to the showcase</a><p>Presentation and aggregate evidence; core implementation remains private.</p></footer></body></html>
